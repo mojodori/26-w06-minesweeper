@@ -10,9 +10,9 @@
 <body>
   <main>
     <header class="heading">
-      <p class="eyebrow">Classic puzzle</p>
+      <span class="title-icon" aria-hidden="true">💣</span>
       <h1>지뢰찾기</h1>
-      <p class="subtitle">숨겨진 지뢰를 피해 모든 안전한 칸을 열어보세요.</p>
+      <span class="window-caption">클래식</span>
     </header>
 
     <section class="toolbar" aria-label="게임 정보">
@@ -27,6 +27,11 @@
       </div>
     </section>
 
+    <div class="board-scroll">
+      <div id="board" role="grid" aria-label="9행 9열 지뢰찾기 게임판"></div>
+    </div>
+    <p id="status" role="status" aria-live="polite">칸을 열어 게임을 시작하세요.</p>
+    <p class="instructions">좌클릭: 칸 열기 <span aria-hidden="true">·</span> 우클릭: 깃발 표시 <span aria-hidden="true">·</span> 열린 숫자 칸 클릭: 주변 칸 열기</p>
     <div class="game-options">
       <div class="settings">
         <span class="settings-label">난이도</span>
@@ -36,14 +41,8 @@
           <button class="difficulty-button" type="button" data-difficulty="expert" aria-label="고급, 30×16, 지뢰 99개" aria-pressed="false">고급</button>
         </div>
       </div>
-      <p class="best-record">이 난이도 최고 기록<strong id="best-record">--</strong></p>
+      <p class="best-record">최고 기록 <strong id="best-record">--</strong></p>
     </div>
-
-    <div class="board-scroll">
-      <div id="board" role="grid" aria-label="9행 9열 지뢰찾기 게임판"></div>
-    </div>
-    <p id="status" role="status" aria-live="polite">칸을 열어 게임을 시작하세요.</p>
-    <p class="instructions">좌클릭: 칸 열기 <span aria-hidden="true">·</span> 우클릭: 깃발 표시 <span aria-hidden="true">·</span> 열린 숫자 칸 클릭: 주변 칸 열기</p>
   </main>
   <div id="confetti" aria-hidden="true"></div>
 

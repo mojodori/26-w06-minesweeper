@@ -142,7 +142,7 @@
 
         cells.forEach((cell, index) => {
           if (won && cell.mine) cell.flagged = true;
-          if (!won && cell.mine && !cell.flagged) cell.revealed = true;
+          if (!won && cell.mine) cell.revealed = true;
           if (!cell.mine && cell.flagged) cell.wrongFlag = true;
           renderCell(index);
         });
