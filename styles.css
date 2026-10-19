@@ -236,26 +236,42 @@
       font-weight: 700;
     }
 
-    .settings label { display: flex; align-items: center; gap: 8px; }
-    .settings label::before { color: #83a48a; content: "✦"; font-size: 14px; }
+    .settings-label { display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+    .settings-label::before { color: #83a48a; content: "✦"; font-size: 14px; }
 
-    #difficulty {
-      min-height: 40px;
-      padding: 0 36px 0 13px;
+    .difficulty-buttons {
+      display: flex;
+      gap: 5px;
+      padding: 4px;
       border: 1px solid #dce6db;
-      border-radius: 12px;
-      outline: none;
-      background: #fff;
-      box-shadow: 0 2px 5px #294e3410;
-      color: #294638;
-      font: inherit;
-      cursor: pointer;
-      transition: border-color .15s, box-shadow .15s;
+      border-radius: 13px;
+      background: #f3f7f2;
     }
 
-    #difficulty:focus-visible {
-      border-color: #79a968;
-      box-shadow: 0 0 0 3px #a9d38a55;
+    .difficulty-button {
+      min-height: 32px;
+      padding: 0 12px;
+      border: 0;
+      border-radius: 9px;
+      background: transparent;
+      color: #607268;
+      font: inherit;
+      font-size: 12px;
+      font-weight: 750;
+      cursor: pointer;
+      transition: background .15s, color .15s, box-shadow .15s;
+    }
+
+    .difficulty-button:hover { background: #e8f0e5; color: #294638; }
+    .difficulty-button.is-selected {
+      background: #fff;
+      box-shadow: 0 1px 4px #294e341c;
+      color: #294638;
+    }
+
+    .difficulty-button:focus-visible {
+      outline: 3px solid #a9d38a;
+      outline-offset: 2px;
     }
 
     .best-record {
@@ -328,7 +344,9 @@
       #reset { width: 46px; height: 46px; border-radius: 15px; }
       .game-options { align-items: flex-start; flex-direction: column; gap: 9px; }
       .settings { align-items: flex-start; flex-direction: column; gap: 8px; }
-      #difficulty { width: 100%; }
+      .settings { width: 100%; }
+      .difficulty-buttons { justify-content: space-between; flex: 1; }
+      .difficulty-button { flex: 1; padding-right: 8px; padding-left: 8px; }
     }
 
     @media (max-width: 380px) {

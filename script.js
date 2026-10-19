@@ -11,7 +11,7 @@
       const timerElement = document.querySelector("#timer");
       const statusElement = document.querySelector("#status");
       const resetButton = document.querySelector("#reset");
-      const difficultySelect = document.querySelector("#difficulty");
+      const difficultyButtons = document.querySelectorAll(".difficulty-button");
       const bestRecordElement = document.querySelector("#best-record");
       const confettiElement = document.querySelector("#confetti");
 
@@ -51,13 +51,22 @@
         if (started) return;
         started = true;
         timerId = window.setInterval(() => {
+          if (seconds === 999) {
+            window.clearInterval(timerId);
+            timerId = null;
+            return;
+          }
           seconds += 1;
           timerElement.textContent = formatTime(seconds);
         }, 1000);
+        resetButton.textContent = "😮";
       }
 
       function updateMineCount() {
-        mineCountElement.textContent = String(config.mines - flags).padStart(3, "0");
+        const remaining = config.mines - flags;
+        mineCountElement.textContent = remaining < 0
+          ? `-${String(Math.abs(remaining)).padStart(2, "0")}`
+          : String(remaining).padStart(3, "0");
       }
 
       function renderCell(index) {
@@ -90,9 +99,10 @@
       }
 
       function placeMines(firstIndex) {
+        const protectedCells = new Set([firstIndex, ...neighborsOf(firstIndex)]);
         const available = cells
           .map((_, index) => index)
-          .filter((index) => index !== firstIndex);
+          .filter((index) => !protectedCells.has(index));
 
         for (let index = available.length - 1; index > 0; index -= 1) {
           const randomIndex = Math.floor(Math.random() * (index + 1));
@@ -124,19 +134,22 @@
             isNewRecord = true;
           }
           updateBestRecord();
-          statusElement.textContent = isNewRecord
-            ? `신기록! ${seconds}초 만에 모든 안전한 칸을 열었습니다.`
-            : `축하합니다! ${seconds}초 만에 모든 안전한 칸을 열었습니다.`;
+          statusElement.textContent = `클리어! 기록 ${seconds}초${isNewRecord ? " (신기록!)" : ""}`;
           if (isNewRecord) celebrateRecord();
         } else {
-          statusElement.textContent = "지뢰를 밟았습니다. 새 게임으로 다시 도전하세요.";
+          statusElement.textContent = "게임 오버";
         }
 
         cells.forEach((cell, index) => {
-          if (cell.mine && !cell.flagged) cell.revealed = true;
+          if (won && cell.mine) cell.flagged = true;
+          if (!won && cell.mine && !cell.flagged) cell.revealed = true;
           if (!cell.mine && cell.flagged) cell.wrongFlag = true;
           renderCell(index);
         });
+        if (won) {
+          flags = config.mines;
+          updateMineCount();
+        }
       }
 
       function checkWin() {
@@ -157,7 +170,12 @@
       }
 
       function reveal(index) {
-        if (gameOver || cells[index].revealed || cells[index].flagged) return;
+        if (gameOver) return;
+        if (cells[index].revealed) {
+          chord(index);
+          return;
+        }
+        if (cells[index].flagged) return;
 
         if (!cells.some((cell) => cell.mine)) placeMines(index);
         startTimer();
@@ -216,6 +234,11 @@
         boardElement.setAttribute("aria-label", `${config.rows}행 ${config.columns}열 지뢰찾기 게임판`);
         resetButton.textContent = "🙂";
         resetButton.setAttribute("aria-label", "새 게임");
+        difficultyButtons.forEach((button) => {
+          const isSelected = button.dataset.difficulty === difficulty;
+          button.classList.toggle("is-selected", isSelected);
+          button.setAttribute("aria-pressed", String(isSelected));
+        });
         statusElement.textContent = "칸을 열어 게임을 시작하세요.";
         delete statusElement.dataset.state;
 
@@ -272,9 +295,11 @@
         window.setTimeout(() => confettiElement.replaceChildren(), 3400);
       }
 
-      difficultySelect.addEventListener("change", () => {
-        difficulty = difficultySelect.value;
-        newGame();
+      difficultyButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          difficulty = button.dataset.difficulty;
+          newGame();
+        });
       });
       resetButton.addEventListener("click", newGame);
       newGame();

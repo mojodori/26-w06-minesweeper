@@ -29,12 +29,12 @@
 
     <div class="game-options">
       <div class="settings">
-        <label for="difficulty">난이도</label>
-        <select id="difficulty">
-          <option value="beginner">초급 · 9×9 · 지뢰 10개</option>
-          <option value="intermediate">중급 · 16×16 · 지뢰 40개</option>
-          <option value="expert">고급 · 30×16 · 지뢰 99개</option>
-        </select>
+        <span class="settings-label">난이도</span>
+        <div class="difficulty-buttons" role="group" aria-label="난이도 선택">
+          <button class="difficulty-button is-selected" type="button" data-difficulty="beginner" aria-label="초급, 9×9, 지뢰 10개" aria-pressed="true">초급</button>
+          <button class="difficulty-button" type="button" data-difficulty="intermediate" aria-label="중급, 16×16, 지뢰 40개" aria-pressed="false">중급</button>
+          <button class="difficulty-button" type="button" data-difficulty="expert" aria-label="고급, 30×16, 지뢰 99개" aria-pressed="false">고급</button>
+        </div>
       </div>
       <p class="best-record">이 난이도 최고 기록<strong id="best-record">--</strong></p>
     </div>
@@ -43,7 +43,7 @@
       <div id="board" role="grid" aria-label="9행 9열 지뢰찾기 게임판"></div>
     </div>
     <p id="status" role="status" aria-live="polite">칸을 열어 게임을 시작하세요.</p>
-    <p class="instructions">좌클릭: 칸 열기 <span aria-hidden="true">·</span> 우클릭: 깃발 표시 <span aria-hidden="true">·</span> 숫자 칸에서 양쪽 클릭: 주변 칸 열기</p>
+    <p class="instructions">좌클릭: 칸 열기 <span aria-hidden="true">·</span> 우클릭: 깃발 표시 <span aria-hidden="true">·</span> 열린 숫자 칸 클릭: 주변 칸 열기</p>
   </main>
   <div id="confetti" aria-hidden="true"></div>
 
